@@ -24,7 +24,7 @@ def index():
         return 'OK'
     elif request.method == "POST":
         # Store the IP address of the requester
-        request_ip = ipaddress.ip_address(u'{0}'.format(request.remote_addr))
+        request_ip = ipaddress.ip_address('{0}'.format(request.remote_addr))
 
         # Check the POST source
         if not WHITELIST_IP is None:
@@ -68,7 +68,7 @@ def index():
                                 subp = subprocess.Popen(action, cwd=branch.get("path", "."), shell=True)
                                 subp.wait()
                             except Exception as e:
-                                print e
+                                print(e)
             return 'OK'
 
         if payload['object_kind'] == "issue":
@@ -142,11 +142,11 @@ if __name__ == "__main__":
     try:
         repos = json.loads(io.open(REPOS_JSON_PATH, 'r').read())
     except:
-        print "Error opening repos file %s -- check file exists and is valid json" % REPOS_JSON_PATH
+        print("Error opening repos file %s -- check file exists and is valid json" % REPOS_JSON_PATH)
         raise
 
     if args.allow:
-        WHITELIST_IP = unicode(args.allow, "utf-8")
+        WHITELIST_IP = str(args.allow, "utf-8")
 
     if args.debug:
         app.debug = True
