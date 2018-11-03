@@ -146,7 +146,7 @@ if __name__ == "__main__":
         raise
 
     if args.allow:
-        WHITELIST_IP = str(args.allow, "utf-8")
+        WHITELIST_IP = args.allow
 
     if args.debug:
         app.debug = True
