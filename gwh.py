@@ -18,7 +18,7 @@ REPOS_JSON_PATH = None
 WHITELIST_IP = None
 repos = None
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/webhooks", methods=['GET', 'POST'])
 def index():
     if request.method == "GET":
         return 'OK'
