@@ -12,6 +12,7 @@ import argparse
 from gitlab_api import GitlabApi
 from helpers import Helpers
 
+
 app = Flask(__name__)
 
 REPOS_JSON_PATH = None
@@ -33,6 +34,10 @@ def index():
                     break  # the remote_addr is within the network range of github.
             else:
                 abort(403)
+
+        if 'secret' in app.config \
+            and app.config['secret'] != request.headers['X-Gitlab-Token']:
+            abort(403)
 
         payload = json.loads(request.data)
 
@@ -130,13 +135,15 @@ if __name__ == "__main__":
                         help="path to repos configuration", required=True)
     parser.add_argument("-p", "--port", action="store", help="server port", 
                         required=False, default=8080)
+    parser.add_argument("-s", "--secret", action="store", help="secret token", 
+                        required=False, default="secret")
     parser.add_argument("--allow", action="store", help="whitelist Gitlab IP block", 
                         required=False, default=None)
     parser.add_argument("--debug", action="store_true", help="enable debug output", 
                         required=False, default=False)
 
     args = parser.parse_args()
-    port_number = int(args.port)
+    app.config['secret'] = args.secret
 
     REPOS_JSON_PATH = args.config
     try:
@@ -151,4 +158,4 @@ if __name__ == "__main__":
     if args.debug:
         app.debug = True
 
-    app.run(host="0.0.0.0", port=port_number)
+    app.run(host="0.0.0.0", port=int(args.port))
