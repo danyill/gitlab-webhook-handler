@@ -42,7 +42,7 @@ def index():
                 'homepage': payload['repository']['homepage'],
             }
             repo = repos.get(repo_meta['homepage'], None)
-            private_token = repo.get('private_token', None)
+            #private_token = repo.get('private_token', None)
 
         if not repo:
             return json.dumps({'error': "nothing to do for " + str(repo_meta)})
